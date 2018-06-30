@@ -91,7 +91,7 @@ def explore_index(host,index):
         print("Nothing found, see below\n{}".format(data))
 
 
-if '__name__' == '__main__':
+if __name__ == '__main__':
     if len(sys.argv) < 3:
         usage()
     else:
