@@ -57,15 +57,18 @@ def _start():
             index = input("What index do you wish to explore? ")
             explore_index(host,index)
         else:
-            print("Not an Elasticsearch cluster/node")
+            print("Sorry! Index not found. Ensure it's an Elasticsearch cluster/node")
             exit(0)
     except Exception as ex:
         print("Exception caught: {}".format(ex))
         usage()
 
 def explore_index(host,index):
+    
     _size = input("How many data set to explore? ")
-    _from = input("Where to start downloading? ")
+    _from = input("Where to start downloading?[default:0] ")
+    if not _from:
+        _from = '0'
     print()
     explore_cmd = "/_search/?q=*&size="+_size+"&from="+_from
 
