@@ -3,7 +3,7 @@ import json
 import sys
 from progress.bar import Bar
 import os, platform
-
+os_env = platform.platform()
 def clear_screen(os_env):
     if 'Windows' in os_env:
         os.system('cls')
@@ -95,6 +95,7 @@ def explore_index(host,index):
 
 
 if __name__ == '__main__':
+    clear_screen(os_env):
     if len(sys.argv) < 3:
         usage()
     else:
