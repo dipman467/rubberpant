@@ -95,7 +95,7 @@ def explore_index(host,index):
 
 
 if __name__ == '__main__':
-    clear_screen(os_env):
+    clear_screen(os_env)
     if len(sys.argv) < 3:
         usage()
     else:
