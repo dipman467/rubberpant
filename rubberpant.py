@@ -86,7 +86,7 @@ def cidr(ip,port):
             ip_address = start[0]+"."+start[1]+"."+start[2]+"."+str(i)
             host = ip_address+":"+port
             print("Cheking ===>  {}".format(host))
-            #elastic_rubber(host) 
+            elastic_rubber(host) 
     else:
         print("Sorry only /24 notation supported")
         
