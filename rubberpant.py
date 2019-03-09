@@ -169,10 +169,11 @@ if __name__ == '__main__':
     if len(sys.argv) < 3:
         usage()
     else:
-         _start()
+        _start()
         thread_list = []
         if "-t" in sys.argv:
             print("Thread support coming soon")
+            
             '''
             t = sys.argv.index("-t")
             tr = sys.argv[t+1]
