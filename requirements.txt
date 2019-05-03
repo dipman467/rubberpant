@@ -1,2 +1,4 @@
 progress
 requests
+argparse
+colorama
