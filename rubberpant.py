@@ -52,35 +52,41 @@ def get_args():
 
   
 def ip_range(ip,port):
-    start, stop = ip.split("-")
+    try:
+        start, stop = ip.split("-")
 
-    _start = start.split(".")
-    _stop = stop.split(".")
-    
-    #Check same subnet
-    if _start[2] == _stop[2]:
-        start_host_index = int(_start[3])
-        stop_host_index = int(_stop[3])
-        counter = start_host_index
-        while stop_host_index != counter-1:
-            ip_address = _start[0]+"."+_start[1]+"."+_start[2]+"."+str(counter)
-            host = ip_address+":"+port
-            print(Fore.GREEN+"Checking ===>  {}".format(host)+Style.RESET_ALL)
-            elastic_rubber(host)
-            counter = counter + 1
-    
+        _start = start.split(".")
+        _stop = stop.split(".")
+        
+        #Check same subnet
+        if _start[2] == _stop[2]:
+            start_host_index = int(_start[3])
+            stop_host_index = int(_stop[3])
+            counter = start_host_index
+            while stop_host_index != counter-1:
+                ip_address = _start[0]+"."+_start[1]+"."+_start[2]+"."+str(counter)
+                host = ip_address+":"+port
+                print(Fore.GREEN+"Checking ===>  {}".format(host)+Style.RESET_ALL)
+                elastic_rubber(host)
+                counter = counter + 1
+    except Exception as ex:
+        print("[IPRange]Error Occured! {}, please check and try again".format(ex))
+        
 def cidr(ip,port):
-    #TODO calculate cidr notation
-    ip,cidr = ip.split("/")
-    if cidr == "24":
-        start = ip.split(".")
-        for i in range(255):
-            ip_address = start[0]+"."+start[1]+"."+start[2]+"."+str(i)
-            host = ip_address+":"+port
-            print(Fore.GREEN+"Checking ===>  {}".format(host)+Style.RESET_ALL)
-            elastic_rubber(host) 
-    else:
-        print("Sorry only /24 notation supported")
+    try:
+        #TODO calculate cidr notation
+        ip,cidr = ip.split("/")
+        if cidr == "24":
+            start = ip.split(".")
+            for i in range(255):
+                ip_address = start[0]+"."+start[1]+"."+start[2]+"."+str(i)
+                host = ip_address+":"+port
+                print(Fore.GREEN+"Checking ===>  {}".format(host)+Style.RESET_ALL)
+                elastic_rubber(host) 
+        else:
+            print("Sorry only /24 notation supported")
+    except Exception as e:
+        print("[CIDR]Error Occured! {}, please check and try again".format(e))
         
             
 def ipfile(infile):
@@ -91,7 +97,7 @@ def ipfile(infile):
                 print(Fore.GREEN+"Checking ===>  {}".format(host)+Style.RESET_ALL)
                 elastic_rubber(host)
     except Exception as e:
-        print("Error occured in ".format(e))
+        print("[IPFile]Error Occured! {}, please check and try again".format(e))
         
 def elastic_rubber(host):
     try:
@@ -122,8 +128,10 @@ def elastic_rubber(host):
                     print(Fore.RED+host+"\tNOT EXPOSED"+Style.RESET_ALL)
                 else:
                     print("{}: Cluster name not found. Ensure it's an Elasticsearch instance".format(host))
+        else:
+            print("No Elasticsearch instance found")
     except Exception as ex:
-        print("Error Occured! {}, please check and try again".format(ex))
+        print("[Main]Error Occured! {} or Not an elasticsearch instance, please check and try again".format(ex))
 
 def explore_index(host,index):
     
@@ -157,20 +165,7 @@ def explore_index(host,index):
         print("Results saved to: {}".format(filename))
         
     else:
-        print("Nothing found, see below\n{}".format(data))
-
-def runThreads(threads):
-    thread_list = []
-    
-    for i in threads:
-        tr = threading.Thread(target=self.generate_listings, args=(url,page_no))                            
-        thread_list.append(tr)
-        thread_list[page_index].start()
-        page_no+= 120
-        page_index+= 1
-    
-    for t in thread_list:
-        t.join()              
+        print("Nothing found, see below\n{}".format(data))            
 
 
 if __name__ == '__main__':
@@ -181,7 +176,8 @@ if __name__ == '__main__':
     #Assign all args
     check = args.check
     ip = args.ip
-    cidr = args.cidr
+    cider = args.cidr
+    iprange = args.range
     infile = args.file
     verbose = args.verbose
     
@@ -194,9 +190,9 @@ if __name__ == '__main__':
     elif ip:
         host = str(ip) + ":" + str(port)
         elastic_rubber(host)
-    elif cidr:
-        cidr(cidr,port)
+    elif cider:
+        cidr(cider,port)
     elif iprange:
-        ip_range(ip,port)
+        ip_range(iprange,port)
     else:
         print("You need to specify one method of IP addressing. Type -h or --help for usage help")
