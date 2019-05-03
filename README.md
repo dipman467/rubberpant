@@ -1,4 +1,4 @@
-## RuberPant
+## RubberPant
 
 
 RubberPant is an interactive data explorer for open elasticsearch instance. 
